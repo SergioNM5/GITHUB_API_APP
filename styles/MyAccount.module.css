@@ -1,0 +1,51 @@
+.my_account__container {
+    width: 100%;
+    padding: 20px 40px;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.my_account__container .user__info .user__info__data {
+    display: flex;
+    align-items: center;
+}
+
+.my_account__container .user__info img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.my_account__container .user__info .user__info__numbers {
+    display: flex;
+    color: #797878;
+    justify-content: space-between;
+    padding: 20px 0;
+    margin-top: 20px;
+    border-top: 1px solid #c0c0c0;
+}
+
+.my_account__container .repositories__container {
+    height: 50vh;
+    overflow: scroll;
+}
+
+.my_account__container .repositories__list {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.my_account__container .repositories__container::-webkit-scrollbar {
+    display: none;
+}
+
+@media (min-width: 900px) {
+    .my_account__container .repositories__list {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+}
