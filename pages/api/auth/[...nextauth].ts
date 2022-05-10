@@ -20,8 +20,11 @@ export default NextAuth({
         // ...add more providers here
     ],
     callbacks: {
-        async session({session, token}) {
-            session.accessToken = token.accessToken
+        async session({session , token, user }) {
+            // @ts-ignore
+            session.user.accessToken = token.accessToken;
+            // @ts-ignore
+            session.user.username = token.username
 
             return session
         },
