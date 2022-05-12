@@ -4,6 +4,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Image from "next/image";
 import Link from 'next/link'
 import {useSession} from "next-auth/react";
+import classes from '../../styles/Header.module.css'
 
 const pages = [{name: 'Search Users', path: 'search-users'}, {
     name: 'Search Repositories',
@@ -12,18 +13,23 @@ const pages = [{name: 'Search Users', path: 'search-users'}, {
 
 const Header = () => {
 
-    const {data: session} = useSession()
-    console.log(session)
-    const [anchorElNav, setAnchorElNav] = React.useState(null);
+    const [anchorElNav, setAnchorElNav] = React.useState<HTMLButtonElement | null>(null);
 
-    const handleOpenNavMenu = (event: any) => {
-        console.log(event.currentTarget)
-        setAnchorElNav(event);
+    const {data: session, status} = useSession();
+
+    const handleOpenNavMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setAnchorElNav(event.currentTarget);
     };
 
     const handleCloseNavMenu = () => {
         setAnchorElNav(null);
     };
+
+    let imageUrl;
+    if (status === 'authenticated') {
+        imageUrl = session?.user.image
+        console.log(imageUrl)
+    }
 
     return (
         <Box>
@@ -38,7 +44,7 @@ const Header = () => {
                             width='50px'
                             height='50px'
                             src='/images/github_icon.png'
-                            alt='Banner del hotel'
+                            alt='Avatar'
                         />
                         <Typography color={'black'} variant='h6' sx={{ml: 1}}>GITHUB</Typography>
                     </Box>
@@ -46,54 +52,62 @@ const Header = () => {
                     <Box sx={{
                         display: {xs: 'none', md: 'flex'}
                     }}>
-                        <Button sx={{color: '#000000'}}>Search Users</Button>
-                        <Button sx={{color: '#000000'}}>Search Repositories</Button>
-                        <Link href='/my-account'>
-                            <Image
-                                priority
-                                width='50px'
-                                height='50px'
-                                src='/images/github_icon.png'
-                                alt='Banner del hotel'
-                            />
+                        <Link href='/search-users' passHref>
+                            <Button sx={{color: '#000000'}}>Search Users</Button>
                         </Link>
+                        <Link href='/search-repos' passHref>
+                            <Button sx={{color: '#000000'}}>Search Repositories</Button>
+                        </Link>
+                        {imageUrl && (
+                            <Box sx={{cursor: 'pointer'}}>
+                                <Link href='/my-account'>
+                                    <Image
+                                        priority
+                                        width='50px'
+                                        height='50px'
+                                        src={`${imageUrl}`}
+                                        alt='avatar'
+                                        className={classes.avatar_image}
+                                    />
+                                </Link>
+                            </Box>
+                        )}
                     </Box>
                     <IconButton
                         size="large"
                         edge="start"
-                        color="secondary"
                         aria-label="menu"
                         sx={{
-                            display: {xs: 'flex', md: 'none'}
+                            display: {xs: 'flex', md: 'none', colo: 'black'}
                         }}
                         onClick={handleOpenNavMenu}
                     >
                         <MenuIcon/>
                     </IconButton>
-                        <Menu
-                            sx={{mt: '45px'}}
-                            id="menu-appbar"
-                            anchorEl={anchorElNav}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            open={Boolean(anchorElNav)}
-                            onClose={handleCloseNavMenu}
-                        >
-                            {pages.map((page) => (
-                                <MenuItem key={page.name} onClick={handleCloseNavMenu}>
-                                    <Link href={`/${page.path}`}>
-                                        <Typography textAlign="center">{page.name}</Typography>
-                                    </Link>
-                                </MenuItem>
-                            ))}
-                        </Menu>
+                    <Menu
+                        sx={{mt: '45px'}}
+                        id="menu-appbar"
+                        anchorEl={anchorElNav}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                        keepMounted
+                        transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                        open={Boolean(anchorElNav)}
+                        onClose={handleCloseNavMenu}
+                    >
+                        {pages.map((page) => (
+                            <MenuItem key={page.name} onClick={handleCloseNavMenu}>
+                                <Link href={`/${page.path}`}>
+                                    <Typography textAlign="center">{page.name}</Typography>
+                                </Link>
+                            </MenuItem>
+                        ))}
+                    </Menu>
                 </Toolbar>
             </AppBar>
         </Box>
