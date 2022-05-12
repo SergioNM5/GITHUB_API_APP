@@ -1,0 +1,48 @@
+.search_repos__container {
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.search_repos__container .title {
+    font-size: 32px;
+    font-weight: normal;
+}
+
+.search_repos__container .title span {
+    color: #19647B;
+}
+
+.search_repos__container .repositories__container {
+    width: 100%;
+    height: auto;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.search_repos__container .repositories__container .repositories__list {
+    display: flex;
+    flex-direction: column;
+}
+
+@media (min-width: 900px) {
+
+    .search_repos__container{
+        padding: 20px 60px;
+    }
+
+    .search_repos__container .title {
+        font-size: 70px;
+    }
+
+    .search_repos__container .repositories__container .repositories__list {
+        flex-direction: row;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+}

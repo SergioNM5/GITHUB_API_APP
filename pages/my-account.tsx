@@ -14,41 +14,50 @@ import {Repos} from "../models/Repos/Repos.entity";
 import {ListReposDto} from "../models/Repos/Repos.dto";
 import {userDataMapper} from "../services/userDataMapper";
 import {repoDataMapper} from "../services/repoDataMapper";
+import Image from "next/image";
 
-const MyAccountPage = ({userDto, reposDto}: { userDto: UserDto, session: Session, reposDto: ListReposDto[] }) => {
+const MyAccountPage = ({userDto, reposDto}: { userDto: UserDto, reposDto: ListReposDto[] }) => {
 
     return (
         <Layout>
+            {userDto && reposDto && (
             <div className={classes.my_account__container}>
-                <div className={classes.user__info}>
-                    <Card sx={{height: '80vh'}}>
-                        <CardContent>
-                            <div className={classes.user__info__data}>
-                                <img src={userDto.profileImage} alt={'Profile Image'}/>
-                                <div>
-                                    <Typography sx={{fontSize: 14}}>{userDto.name}</Typography>
-                                    {userDto.email && <Typography sx={{fontSize: 12}}>ID: {userDto.email}</Typography>}
-                                    <Typography sx={{fontSize: 12}}>ID: {userDto.username}</Typography>
-                                </div>
+                <div className={classes.user}>
+                    <div className={classes.user__info}>
+                        <div className={classes.user__info__data}>
+                            <Image
+                                priority
+                                width='60px'
+                                height='60px'
+                                src={`${userDto.profileImage}`}
+                                alt='Avatar Image'
+                                className={classes.avatar_image}
+                            />
+                            <div>
+                                <Typography sx={{fontSize: 14}}>{userDto.name}</Typography>
+                                {userDto.email && <Typography sx={{fontSize: 12}}>ID: {userDto.email}</Typography>}
+                                <Typography sx={{fontSize: 12}}>ID: {userDto.username}</Typography>
                             </div>
-                            <div className={classes.user__info__numbers}>
-                                <Typography sx={{fontSize: 14}}>{userDto.followers} followers </Typography>
-                                <Typography sx={{fontSize: 14}}>{userDto.following} following </Typography>
-                            </div>
-                            <div className={classes.repositories__container}>
-                                <h4>Repositories</h4>
-                                <div className={classes.repositories__list}>
-                                    {reposDto.map(repo => {
-                                        return (
-                                            <RepoCard key={repo.repoName} repo={repo}/>
-                                        )
-                                    })}
-                                </div>
-                            </div>
-                        </CardContent>
-                    </Card>
+                        </div>
+                        <div className={classes.horizontal__line}/>
+                        <div className={classes.user__info__numbers}>
+                            <Typography sx={{fontSize: 14}}>{userDto.followers} followers </Typography>
+                            <Typography sx={{fontSize: 14}}>{userDto.following} following </Typography>
+                        </div>
+                    </div>
+                    <div className={classes.repositories__container}>
+                        <h4>Repositories</h4>
+                        <div className={classes.repositories__list}>
+                            {reposDto.map(repo => {
+                                return (
+                                    <RepoCard key={repo.repoName} repo={repo}/>
+                                )
+                            })}
+                        </div>
+                    </div>
                 </div>
             </div>
+            )}
         </Layout>
     );
 };
