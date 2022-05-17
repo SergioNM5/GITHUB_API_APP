@@ -3,10 +3,11 @@ import Layout from "../../components/Layout/Layout";
 import classes from '../../styles/SearchRepos.module.css'
 import SearchBar from "../../components/UI/SearchBar";
 import {ListReposDto} from "../../models/Repos/Repos.dto";
-import {useSession} from "next-auth/react";
+import {getSession, useSession} from "next-auth/react";
 import {repoDataMapper} from "../../services/repoDataMapper";
 import {Repos} from "../../models/Repos/Repos.entity";
 import RepoCard from "../../components/RepoCard";
+import {GetServerSideProps} from "next";
 
 
 const SearchReposPage = () => {
@@ -82,6 +83,26 @@ const SearchReposPage = () => {
         </Layout>
     );
 };
+
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const session = await getSession(context);
+
+    if (!session) {
+        return {
+            redirect: {
+                destination: '/login',
+                permanent: false
+            }
+        }
+    }
+
+    return {
+        props: {
+            session
+        }
+    }
+}
 
 
 export default SearchReposPage;

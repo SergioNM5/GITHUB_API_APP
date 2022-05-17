@@ -66,6 +66,16 @@ const MyAccountPage = ({userDto, reposDto}: { userDto: UserDto, reposDto: ListRe
 export const getServerSideProps: GetServerSideProps = async (context) => {
 
     const session = await getSession(context)
+
+    if (!session) {
+        return {
+            redirect: {
+                destination: '/login',
+                permanent: false
+            }
+        }
+    }
+
     const userResponse = await fetch(`https://api.github.com/users/${session?.user.username}`, {
         headers: {
             authorization: `token ${session?.user.accessToken}`
@@ -86,7 +96,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return {
         props: {
             userDto: JSON.parse(JSON.stringify(userDto)),
-            reposDto: JSON.parse(JSON.stringify(reposDto))
+            reposDto: JSON.parse(JSON.stringify(reposDto)),
         }
     }
 }

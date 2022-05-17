@@ -7,6 +7,7 @@ import {UserDto} from "../../models/User/User.dto";
 import {userDataMapper} from "../../services/userDataMapper";
 import Image from "next/image";
 import {Typography} from "@mui/material";
+import {GetServerSideProps} from "next";
 
 const SearchUsersPage = () => {
 
@@ -87,6 +88,25 @@ const SearchUsersPage = () => {
         </Layout>
     );
 };
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const session = await getSession(context);
+
+    if (!session) {
+        return {
+            redirect: {
+                destination: '/login',
+                permanent: false
+            }
+        }
+    }
+
+    return {
+        props: {
+            session
+        }
+    }
+}
 
 
 export default SearchUsersPage;
