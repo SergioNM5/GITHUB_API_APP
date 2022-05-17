@@ -1,0 +1,63 @@
+.search_users__container {
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.search_users__container .title {
+    font-size: 32px;
+    font-weight: normal;
+}
+
+.search_users__container .title span {
+    color: #19647B;
+}
+
+.search_users__container .user__info{
+    width: 100%;
+    margin-top: 30px;
+    background-color: #fff;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 1px 1px 5px 2px rgba(0, 0, 0, 0.2);
+}
+
+.search_users__container .user__info .user__info__data {
+    display: flex;
+    align-items: center;
+}
+
+.search_users__container .user__info .avatar_image {
+    border-radius: 50%;
+}
+
+.search_users__container .user__info .user__info__data div {
+    margin-left: 10px;
+}
+
+.search_users__container .user__info .user__info__numbers {
+    display: flex;
+    color: #797878;
+    justify-content: space-between;
+    padding: 20px 0;
+    margin-top: 20px;
+    border-top: 1px solid #c0c0c0;
+}
+
+@media (min-width: 900px) {
+
+    .search_users__container{
+        padding: 20px 60px;
+    }
+
+    .search_users__container .title {
+        font-size: 70px;
+    }
+
+    .search_users__container .user__info{
+        max-width: 400px;
+    }
+
+}

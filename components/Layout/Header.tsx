@@ -3,13 +3,13 @@ import {AppBar, Box, IconButton, Toolbar, Typography, Button, Menu, MenuItem} fr
 import MenuIcon from '@mui/icons-material/Menu';
 import Image from "next/image";
 import Link from 'next/link'
-import {useSession} from "next-auth/react";
+import {useSession, signOut} from "next-auth/react";
 import classes from '../../styles/Header.module.css'
 
 const pages = [{name: 'Search Users', path: 'search-users'}, {
     name: 'Search Repositories',
     path: 'search-repos'
-}, {name: 'My Account', path: 'my-account'}];
+}, {name: 'My Account', path: 'my-account'}, {name: 'Logout'}];
 
 const Header = () => {
 
@@ -28,7 +28,6 @@ const Header = () => {
     let imageUrl;
     if (status === 'authenticated') {
         imageUrl = session?.user.image
-        console.log(imageUrl)
     }
 
     return (
@@ -58,6 +57,7 @@ const Header = () => {
                         <Link href='/search-repos' passHref>
                             <Button sx={{color: '#000000'}}>Search Repositories</Button>
                         </Link>
+                        <Button onClick={() => signOut({callbackUrl:'/login'})} sx={{color: '#000000'}}>Logout</Button>
                         {imageUrl && (
                             <Box sx={{cursor: 'pointer'}}>
                                 <Link href='/my-account'>
@@ -100,13 +100,19 @@ const Header = () => {
                         open={Boolean(anchorElNav)}
                         onClose={handleCloseNavMenu}
                     >
-                        {pages.map((page) => (
-                            <MenuItem key={page.name} onClick={handleCloseNavMenu}>
-                                <Link href={`/${page.path}`}>
-                                    <Typography textAlign="center">{page.name}</Typography>
-                                </Link>
-                            </MenuItem>
-                        ))}
+                        {pages.map((page) => {
+                            return page.name === 'Logout' ? (
+                                <MenuItem>
+                                    <Typography onClick={() => signOut({callbackUrl:'/login'})} textAlign="center">{page.name}</Typography>
+                                </MenuItem>
+                            ) : (
+                                <MenuItem key={page.name} onClick={handleCloseNavMenu}>
+                                    <Link href={`/${page.path}`}>
+                                        <Typography textAlign="center">{page.name}</Typography>
+                                    </Link>
+                                </MenuItem>
+                            )
+                        } )}
                     </Menu>
                 </Toolbar>
             </AppBar>
